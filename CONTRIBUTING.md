@@ -12,6 +12,8 @@ A friendly, AI-powered bowling approach analyzer for everyone.
 
 ## How to Use
 
+- **Quickest:** [Try the live app here!](https://yavru421.github.io/BowlBetter/bowling_approach_analyzer.html)
+
 1. Open `bowling_approach_analyzer.html` in your browser.
 2. Enter your Groq API key (see the app for instructions).
 3. Upload your bowling approach images and analyze!

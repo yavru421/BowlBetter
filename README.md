@@ -1,5 +1,7 @@
 # BowlBetter!
 
+[![Open BowlBetter! Live](https://img.shields.io/badge/Open%20App-BowlBetter!-00bfff?style=for-the-badge&logo=googlechrome)](https://yavru421.github.io/BowlBetter/bowling_approach_analyzer.html)
+
 Welcome to **BowlBetter!** — your friendly, AI-powered bowling approach analyzer.
 
 ---
@@ -79,6 +81,8 @@ fetch('https://api.groq.com/openai/v1/chat/completions', { ... });
 ---
 
 ## 🛠️ Getting Started (Developers)
+
+[**▶️ Try BowlBetter! Live**](https://yavru421.github.io/BowlBetter/bowling_approach_analyzer.html)
 
 1. Clone or download this repository.
 2. Open `bowling_approach_analyzer.html` in your browser.
