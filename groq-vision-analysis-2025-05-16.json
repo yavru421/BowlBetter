@@ -1,0 +1,392 @@
+[
+  {
+    "fileName": "IMG_4365_1627.jpg",
+    "fileType": "image",
+    "fileSize": 248617,
+    "objects": [
+      "car",
+      "cat",
+      "dog",
+      "table"
+    ],
+    "faces": 3,
+    "metadata": {
+      "width": 1760,
+      "height": 2095,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains dark tones.",
+      "Primary colors detected: green."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1627.jpg",
+    "fileType": "image",
+    "fileSize": 248617,
+    "objects": [
+      "chair",
+      "person"
+    ],
+    "faces": 1,
+    "metadata": {
+      "width": 1762,
+      "height": 2042,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains dark tones.",
+      "Primary colors detected: green."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1627.jpg",
+    "fileType": "image",
+    "fileSize": 248617,
+    "objects": [
+      "person",
+      "building",
+      "phone",
+      "computer"
+    ],
+    "faces": 3,
+    "metadata": {
+      "width": 2116,
+      "height": 2395,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains dark tones.",
+      "Primary colors detected: blue."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1627.jpg",
+    "fileType": "image",
+    "fileSize": 248617,
+    "objects": [
+      "chair"
+    ],
+    "faces": 0,
+    "metadata": {
+      "width": 1696,
+      "height": 647,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains dark tones.",
+      "Primary colors detected: yellow."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1658.jpg",
+    "fileType": "image",
+    "fileSize": 248102,
+    "objects": [
+      "dog",
+      "chair"
+    ],
+    "faces": 0,
+    "metadata": {
+      "width": 829,
+      "height": 1844,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains bright tones.",
+      "Primary colors detected: blue."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1627.jpg",
+    "fileType": "image",
+    "fileSize": 248617,
+    "objects": [
+      "computer"
+    ],
+    "faces": 0,
+    "metadata": {
+      "width": 504,
+      "height": 1019,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains dark tones.",
+      "Primary colors detected: blue."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1658.jpg",
+    "fileType": "image",
+    "fileSize": 248102,
+    "objects": [
+      "tree"
+    ],
+    "faces": 0,
+    "metadata": {
+      "width": 1520,
+      "height": 2458,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains bright tones.",
+      "Primary colors detected: red."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1750.jpg",
+    "fileType": "image",
+    "fileSize": 245035,
+    "objects": [
+      "building"
+    ],
+    "faces": 4,
+    "metadata": {
+      "width": 1542,
+      "height": 1639,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains dark tones.",
+      "Primary colors detected: blue."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1627.jpg",
+    "fileType": "image",
+    "fileSize": 248617,
+    "objects": [
+      "building",
+      "table",
+      "phone",
+      "cat"
+    ],
+    "faces": 1,
+    "metadata": {
+      "width": 1898,
+      "height": 1438,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains dark tones.",
+      "Primary colors detected: blue."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1750.jpg",
+    "fileType": "image",
+    "fileSize": 245035,
+    "objects": [
+      "phone",
+      "person"
+    ],
+    "faces": 0,
+    "metadata": {
+      "width": 1613,
+      "height": 2449,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains dark tones.",
+      "Primary colors detected: green."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1658.jpg",
+    "fileType": "image",
+    "fileSize": 248102,
+    "objects": [
+      "building",
+      "cat",
+      "table"
+    ],
+    "faces": 3,
+    "metadata": {
+      "width": 2476,
+      "height": 1472,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains dark tones.",
+      "Primary colors detected: red."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1809.jpg",
+    "fileType": "image",
+    "fileSize": 240154,
+    "objects": [
+      "chair",
+      "table"
+    ],
+    "faces": 1,
+    "metadata": {
+      "width": 942,
+      "height": 1903,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains bright tones.",
+      "Primary colors detected: blue."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1627.jpg",
+    "fileType": "image",
+    "fileSize": 248617,
+    "objects": [
+      "chair",
+      "computer",
+      "cat"
+    ],
+    "faces": 4,
+    "metadata": {
+      "width": 1883,
+      "height": 1797,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains dark tones.",
+      "Primary colors detected: green."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1658.jpg",
+    "fileType": "image",
+    "fileSize": 248102,
+    "objects": [
+      "computer",
+      "table",
+      "building",
+      "chair"
+    ],
+    "faces": 1,
+    "metadata": {
+      "width": 976,
+      "height": 2301,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains bright tones.",
+      "Primary colors detected: yellow."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1809.jpg",
+    "fileType": "image",
+    "fileSize": 240154,
+    "objects": [
+      "chair",
+      "phone",
+      "tree",
+      "person",
+      "cat"
+    ],
+    "faces": 0,
+    "metadata": {
+      "width": 2040,
+      "height": 1178,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains bright tones.",
+      "Primary colors detected: blue."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1809.jpg",
+    "fileType": "image",
+    "fileSize": 240154,
+    "objects": [
+      "chair",
+      "computer",
+      "person"
+    ],
+    "faces": 4,
+    "metadata": {
+      "width": 1789,
+      "height": 2086,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains dark tones.",
+      "Primary colors detected: yellow."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1842.jpg",
+    "fileType": "image",
+    "fileSize": 243941,
+    "objects": [
+      "phone",
+      "cat"
+    ],
+    "faces": 1,
+    "metadata": {
+      "width": 758,
+      "height": 1652,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains bright tones.",
+      "Primary colors detected: red."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1842.jpg",
+    "fileType": "image",
+    "fileSize": 243941,
+    "objects": [
+      "computer"
+    ],
+    "faces": 4,
+    "metadata": {
+      "width": 1492,
+      "height": 658,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains dark tones.",
+      "Primary colors detected: red."
+    ]
+  },
+  {
+    "fileName": "IMG_4365_1809.jpg",
+    "fileType": "image",
+    "fileSize": 240154,
+    "objects": [
+      "table",
+      "chair",
+      "computer"
+    ],
+    "faces": 2,
+    "metadata": {
+      "width": 2485,
+      "height": 2078,
+      "duration": null,
+      "format": "JPG"
+    },
+    "insights": [
+      "The image contains bright tones.",
+      "Primary colors detected: blue."
+    ]
+  }
+]

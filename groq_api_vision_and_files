@@ -1,0 +1,144 @@
+# Context File: Groq API - Vision and File Upload
+
+## API Overview
+The Groq API provides endpoints for interacting with vision-related tasks and file uploads. These APIs allow users to upload files, process them, and retrieve results for various use cases.
+
+---
+
+## File Upload API
+
+### Endpoint
+**POST** `/files/upload`
+
+### Description
+This endpoint is used to upload files to the Groq platform for further processing.
+
+### Request Headers
+- **Authorization**: Bearer token for authentication.
+- **Content-Type**: `multipart/form-data`
+
+### Request Body
+The request body should include:
+- **file**: The file to be uploaded (binary data).
+- **metadata** (optional): Additional metadata about the file in JSON format.
+
+### Example Request
+```http
+POST /files/upload HTTP/1.1
+Host: api.groq.com
+Authorization: Bearer <your_token>
+Content-Type: multipart/form-data
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="example.jpg"
+Content-Type: image/jpeg
+
+<binary data>
+--boundary
+Content-Disposition: form-data; name="metadata"
+
+{"description": "Sample file"}
+--boundary--
+```
+
+### Response
+- **200 OK**: File uploaded successfully.
+  - Response body includes a unique file ID and metadata.
+- **400 Bad Request**: Invalid file or metadata.
+- **401 Unauthorized**: Missing or invalid authentication token.
+
+---
+
+## Vision API
+
+### Description
+The Vision API processes uploaded files for tasks such as image recognition, object detection, and more.
+
+### Workflow
+1. Upload a file using the `/files/upload` endpoint.
+2. Use the file ID from the upload response to initiate vision processing.
+
+### Key Endpoints
+- **POST** `/vision/process`: Start processing a file for vision tasks.
+- **GET** `/vision/results/{file_id}`: Retrieve results for a processed file.
+
+### Example Workflow
+1. **Upload File**
+   - Use `/files/upload` to upload an image or video.
+   - Receive a `file_id` in the response.
+
+2. **Process File**
+   - Use `/vision/process` with the `file_id` to start processing.
+   - Example payload:
+     ```json
+     {
+       "file_id": "12345",
+       "task": "object_detection"
+     }
+     ```
+
+3. **Retrieve Results**
+   - Use `/vision/results/{file_id}` to fetch the results of the processing.
+
+---
+
+## Authentication
+All API requests require a valid Bearer token in the `Authorization` header. Tokens can be obtained from the Groq console.
+
+---
+
+## Error Handling
+- **400**: Bad request (e.g., invalid file format).
+- **401**: Unauthorized (e.g., missing or invalid token).
+- **500**: Internal server error.
+
+---
+
+## Notes
+- Ensure files are within the size limits specified in the documentation.
+- Supported file types include images (JPEG, PNG) and videos (MP4, etc.).
+- Metadata is optional but can be useful for organizing files.
+
+---
+
+## References
+For more details, visit the [Groq API Documentation](https://console.groq.com/docs/api-reference#files-upload).
+
+
+
+from groq import Groq
+import base64
+import os
+
+# Function to encode the image
+def encode_image(image_path):
+  with open(image_path, "rb") as image_file:
+    return base64.b64encode(image_file.read()).decode('utf-8')
+
+# Path to your image
+image_path = "sf.jpg"
+
+# Getting the base64 string
+base64_image = encode_image(image_path)
+
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+
+chat_completion = client.chat.completions.create(
+    messages=[
+        {
+            "role": "user",
+            "content": [
+                {"type": "text", "text": "What's in this image?"},
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:image/jpeg;base64,{base64_image}",
+                    },
+                },
+            ],
+        }
+    ],
+    model="meta-llama/llama-4-scout-17b-16e-instruct",
+)
+
+print(chat_completion.choices[0].message.content)
