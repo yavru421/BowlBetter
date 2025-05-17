@@ -16,7 +16,7 @@
             border: 1px solid #ddd;
             width: calc(100% - 22px);
         }
-        #apiKey {
+        #apiKey, input[type="text"] {
             width: calc(100% - 22px);
             margin-bottom: 10px;
         }
@@ -32,9 +32,12 @@
         <h1>Groq Image Analysis (Client-Side)</h1>
         <div>
             <label for="apiKey">Groq API Key:</label>
-            <input type="text" id="apiKey" placeholder="Enter your Groq API Key here" style="width: calc(100% - 22px); margin-bottom: 10px;">
+            <input type="text" id="apiKey" placeholder="Enter your Groq API Key here">
         </div>
-        <input type="file" id="imageFile" accept="image/*">
+        <div>
+            <label for="imageFile">Choose an image file:</label>
+            <input type="file" id="imageFile" accept="image/*" aria-label="Image file selection" title="Select an image to analyze">
+        </div>
         <input type="text" id="prompt" placeholder="Optional: Enter a prompt (e.g., What color is the car?)">
         <button onclick="analyzeImage()">Analyze Image</button>
         <div class="spinner" id="spinner"></div>

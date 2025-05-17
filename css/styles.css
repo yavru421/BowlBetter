@@ -1,0 +1,454 @@
+/* Extracted CSS from bowling_approach_analyzer.html */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+.api-key-row {
+    position: relative;
+    margin-bottom: 18px;
+}
+.flex-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+.flex-row .flex-btn {
+    flex: 1;
+    margin: 0 2px;
+    min-width: 0;
+}
+#stepTabsNav {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+.mt-20 {
+    margin-top: 20px;
+}
+
+/* Styles for per-image loading progress */
+.progress-bar-container-small {
+    height: 10px;
+    background: #2c3242;
+    border-radius: 2px;
+    margin: 5px 0;
+    overflow: hidden;
+}
+
+.progress-bar-small {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.1s ease;
+}
+
+.loading-text-small {
+    font-size: 0.8em;
+    color: var(--text-muted);
+    display: block; /* Ensure it takes its own line if needed */
+    margin-top: 2px;
+}
+
+/* Styles for individual step analysis status */
+.step-individual-status {
+    font-style: italic;
+    margin-bottom: 5px;
+    color: var(--text-muted);
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+/* Styles for main analysis progress bar */
+.progress-bar-container {
+    width: 100%;
+    background-color: #333;
+    border-radius: 5px;
+    margin-top: 10px; /* Added to match original inline style */
+    display: none; /* Hidden by default */
+}
+
+.progress-bar {
+    width: 0%;
+    height: 20px;
+    background-color: var(--accent);
+    border-radius: 5px;
+    text-align: center;
+    line-height: 20px;
+    color: white;
+    transition: width 0.3s ease;
+}
+
+#mainAnalysisProgressText {
+    text-align: center;
+    margin-top: 10px; /* Added to match original inline style */
+    font-size: 0.95em;
+    display: none; /* Hidden by default */
+}
+
+.rating-display {
+    margin-top: 10px;
+    font-size: 1.2em;
+    color: var(--accent);
+}
+.discussion-board {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+.messages-container {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+.message {
+    margin-bottom: 10px;
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+}
+.message-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.message-input, .message-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.message-submit {
+    align-self: flex-end;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.message-submit:hover {
+    background-color: #0056b3;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+header {
+    text-align: center;
+    padding: 20px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 8px;
+}
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+button:hover {
+    background-color: #0056b3;
+}
+.step-tab-btn {
+    flex: 1;
+    margin: 0 5px;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+.step-tab-btn:hover {
+    background-color: #0056b3;
+}
+.step-tab-content {
+    display: none;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-top: 10px;
+}
+.step-tab-content.active {
+    display: block;
+}
+.step-image-input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.preview-container {
+    margin-top: 10px;
+    text-align: center;
+}
+.step-analysis {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+.bulk-upload-error {
+    color: #ffb300;
+    margin-top: 8px;
+    display: none;
+    font-weight: bold;
+}
+.processing-status {
+    margin-bottom: 18px;
+    background: #1e2330;
+    border: 1px solid #2c3242;
+    border-radius: 4px;
+    padding: 15px;
+}
+.processing-status ol {
+    margin: 8px 0 0 18px;
+}
+.processing-status .groq-link-highlight {
+    color: #ffb300;
+    text-decoration: underline;
+}
+.processing-status .privacy-note {
+    margin-top: 8px;
+    color: #b0b8c1;
+    font-size: 0.97em;
+}
+
+/* Progress Bar for Upload */
+#uploadProgressContainer {
+    display: none; /* Hidden by default */
+    margin-top: 10px;
+}
+
+#uploadProgressBar {
+    width: 0%; /* Initial width */
+    background-color: var(--accent); /* Or your preferred color */
+    height: 10px; /* Or your preferred height */
+    border-radius: 5px;
+}
+
+#uploadProgressText {
+    display: none; /* Hidden by default */
+    margin-top: 5px;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.error-message {
+    display: none; /* Hidden by default */
+    color: var(--danger);
+    margin-top: 5px;
+}
+
+#stepTabsContainer {
+    display: block !important;
+}
+
+/* Styles for Collapsible Sections */
+.collapsible-section {
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 10px;
+    overflow: hidden; /* Ensures border-radius is respected by children */
+}
+
+.collapsible-header {
+    background: var(--surface); /* Slightly different from section for visual hierarchy */
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border); /* Separator when open */
+}
+
+.collapsible-header:hover {
+    background: var(--primary-dark);
+    color: #fff;
+}
+
+.collapsible-header.active {
+    background: var(--primary-dark); /* Active state color */
+    color: #fff;
+}
+
+.collapsible-header strong {
+    font-size: 1.05em;
+}
+
+.toggle-icon {
+    font-size: 1.2em;
+    transition: transform 0.3s ease;
+}
+
+.collapsible-header.active .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.collapsible-content {
+    padding: 15px;
+    background-color: var(--surface-alt);
+    border-top: 1px solid var(--border);
+    border-radius: 0 0 6px 6px;
+    display: none; /* Initially hidden */
+}
+
+.collapsible-content.active {
+    display: block; /* Shown when active */
+}
+
+.collapsible-header.active + .collapsible-content {
+    display: block;
+}
+
+.collapsible-content ol {
+    margin-left: 20px; /* Indent list items */
+    padding-left: 0;
+}
+
+.collapsible-content li {
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+/* Styling for analysis results within collapsible sections */
+#result .collapsible-section h3 {
+    margin-top: 0; /* Remove default margin for h3 inside collapsible */
+    color: var(--primary);
+}
+
+#result .collapsible-content div { /* General styling for content within analysis */
+    line-height: 1.6;
+}
+
+/* Styles for the YouTube video logo */
+.video-logo-container {
+    width: 100%; /* Or a fixed width like 200px */
+    max-width: 250px; /* Adjust as needed */
+    height: 0;
+    padding-bottom: calc(250px * 9 / 16); /* Maintain 16:9 aspect ratio, adjust 250px if max-width changes */
+    position: relative;
+    margin: 0 auto 18px auto;
+    overflow: hidden;
+    border-radius: 8px; /* Optional: if you want rounded corners */
+}
+.youtube-logo-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none; /* Remove iframe border */
+}
+
+/* Fun SVG art for the header */
+.app-header {
+    position: relative;
+    overflow: hidden;
+    padding: 20px 0;
+    border-radius: 0 0 20px 20px;
+    margin-bottom: 20px;
+}
+
+.app-header h1 {
+    font-size: 2.5em;
+    margin: 0;
+    position: relative;
+    z-index: 2;
+}
+
+.bowling-svg-art {
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    transform: translate(50%, 50%);
+    width: 150%;
+    max-width: 600px;
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Tabulature navigation styles */
+.tab-nav-list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px 0;
+    border-bottom: 2px solid var(--accent, #00bfff);
+    background: #181c27;
+    overflow-x: auto;
+}
+.tab-nav-item {
+    padding: 10px 24px;
+    cursor: pointer;
+    color: #bfcfff;
+    font-weight: 500;
+    border: none;
+    background: none;
+    transition: background 0.2s, color 0.2s;
+    border-bottom: 2px solid transparent;
+    outline: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+.tab-nav-item.active {
+    color: var(--accent, #00bfff);
+    background: #23283a;
+    border-bottom: 2px solid var(--accent, #00bfff);
+}
+.tab-panel {
+    display: none;
+    background: #23283a;
+    border-radius: 0 0 8px 8px;
+    padding: 18px 12px 12px 12px;
+    min-height: 180px;
+    margin-bottom: 16px;
+}
+.tab-panel[style*="display: block"] {
+    display: block;
+}
+.tab-nav-controls {
+    margin-top: 8px;
+    text-align: right;
+}
+
+@media (max-width: 600px) {
+    .container {
+        box-shadow: none;
+    }
+    .app-header h1 {
+        font-size: 1.5em;
+    }
+    .bowling-svg-art {
+        max-width: 120px;
+    }
+    .step-tab-btn {
+        padding: 7px 8px;
+        font-size: 0.95em;
+    }
+    .bulk-upload-container {
+        padding: 10px 6px 6px 6px;
+    }
+    .api-key-instructions {
+        padding: 10px 6px;
+    }
+}

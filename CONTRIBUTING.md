@@ -1,4 +1,4 @@
-# BowlBetter!
+# BowlBetter
 
 A friendly, AI-powered bowling approach analyzer for everyone.
 

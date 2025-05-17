@@ -62,11 +62,56 @@ function setupEventListeners() {
 
     const saveApiKeyBtn = document.getElementById('saveApiKeyBtn');
     if (saveApiKeyBtn) {
-        saveApiKeyBtn.addEventListener('click', () => {
+        saveApiKeyBtn.addEventListener('click', async () => {
             const apiKeyInput = document.getElementById('apiKey');
             if (apiKeyInput && apiKeyInput.value) {
                 localStorage.setItem('groqApiKey', apiKeyInput.value);
-                alert('API Key saved!');
+                // Show testing message
+                let statusDiv = document.getElementById('apiKeyStatus');
+                if (!statusDiv) {
+                    statusDiv = document.createElement('div');
+                    statusDiv.id = 'apiKeyStatus';
+                    apiKeyInput.parentElement.appendChild(statusDiv);
+                }
+                statusDiv.textContent = 'Testing API Key...';
+                statusDiv.style.color = '#ffb300';
+                // Run a test call to Groq vision API
+                try {
+                    const testPayload = {
+                        messages: [
+                            {
+                                role: "user",
+                                content: [
+                                    { type: "text", text: "Say: API key test successful." }
+                                ]
+                            }
+                        ],
+                        model: "meta-llama/llama-4-scout-17b-16e-instruct",
+                        max_tokens: 10
+                    };
+                    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${apiKeyInput.value}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(testPayload)
+                    });
+                    if (!response.ok) {
+                        throw new Error('API Key test failed.');
+                    }
+                    const data = await response.json();
+                    if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
+                        statusDiv.textContent = 'API Key is valid! System is good to go.';
+                        statusDiv.style.color = '#28a745';
+                    } else {
+                        statusDiv.textContent = 'API Key test failed. Please check your key.';
+                        statusDiv.style.color = '#dc3545';
+                    }
+                } catch (e) {
+                    statusDiv.textContent = 'API Key test failed. Please check your key.';
+                    statusDiv.style.color = '#dc3545';
+                }
             } else {
                 alert('Please enter an API Key.');
             }
