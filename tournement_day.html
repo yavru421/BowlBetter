@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament Day</title>
+    <script src="js/scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fetch and display tournament tips
+            fetchTournamentTips();
+        });
+    </script>
+</head>
+<body>
+    <h1>BowlBetter: Tournament Day</h1>
+    <p>Prepare for your tournament with personalized tips and analysis.</p>
+    <a href="bowling_approach_analyzer.html">Back to Main App</a>
+
+    <div id="score-keeping-section" class="container mt-20">
+        <h2>Score Keeping</h2>
+        <div>
+            <label for="game-score">Enter Score for Game:</label>
+            <input type="number" id="game-score" placeholder="E.g., 180">
+            <button id="add-score-btn">Add Game Score</button>
+        </div>
+        <div id="scores-list" class="mt-10">
+            <h3>Recorded Scores:</h3>
+            <ul id="scores-ul">
+                <!-- Scores will be listed here -->
+            </ul>
+        </div>
+    </div>
+
+    <div id="statistics-section" class="container mt-20">
+        <h2>Statistics</h2>
+        <div id="stats-summary">
+            <p>Total Games: <span id="total-games">0</span></p>
+            <p>Total Pinfall: <span id="total-pinfall">0</span></p>
+            <p>Average Score: <span id="average-score">0</span></p>
+            <p>High Score: <span id="high-score">0</span></p>
+            <p>Low Score: <span id="low-score">N/A</span></p>
+        </div>
+        <div id="charts-placeholder" class="mt-10">
+            <h3>Score Chart</h3>
+            <!-- Chart will be rendered here (e.g., using a library or simple CSS bars) -->
+            <p>(Chart functionality to be implemented)</p>
+        </div>
+    </div>
+
+    <div id="tips-section" class="container mt-20">
+        <h2>Personalized Tips</h2>
+        <ul id="tips-list">
+            <!-- Tips will be dynamically loaded here -->
+        </ul>
+    </div>
+
+    <div id="analysis-section" class="container mt-20">
+        <h2>Performance Analysis</h2>
+        <p>Analyze your past performances to improve your game.</p>
+        <button id="analyze-performance-btn">Analyze Now</button>
+    </div>
+</body>
+</html>

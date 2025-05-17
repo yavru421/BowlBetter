@@ -5,7 +5,8 @@ const urlsToCache = [
   "/css/styles.css",
   "/js/scripts.js",
   "/icons/icon-192x192.png",
-  "/icons/icon-512x512.png"
+  "/icons/icon-512x512.png",
+  "/tournement_day.html" // Added new file for Tournament Day feature
 ];
 
 self.addEventListener("install", event => {

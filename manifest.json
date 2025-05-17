@@ -1,6 +1,7 @@
 {
   "name": "BowlBetter!",
   "short_name": "BowlBetter",
+  "version": "1.2",
   "start_url": "/bowling_approach_analyzer.html",
   "display": "standalone",
   "background_color": "#ffffff",

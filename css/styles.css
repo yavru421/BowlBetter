@@ -452,3 +452,92 @@ button:hover {
         padding: 10px 6px;
     }
 }
+
+/* Styles for Tournament Day Page */
+#score-keeping-section h2,
+#statistics-section h2,
+#tips-section h2,
+#analysis-section h2 {
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+#score-keeping-section div,
+#statistics-section div {
+    margin-bottom: 10px;
+}
+
+#scores-list ul,
+#tips-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#scores-list li,
+#tips-list li {
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+}
+
+#stats-summary p {
+    margin: 5px 0;
+    font-size: 1.1em;
+}
+
+#stats-summary span {
+    font-weight: bold;
+    color: var(--accent);
+}
+
+#charts-placeholder {
+    border: 1px dashed var(--border);
+    padding: 20px;
+    text-align: center;
+    background-color: var(--surface-alt);
+    border-radius: 4px;
+}
+
+#charts-placeholder h3 {
+    margin-top: 0;
+}
+
+/* Ensure container class styles are applied if not already generic enough */
+.container.mt-20 {
+    margin-top: 20px;
+    background: var(--surface);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+/* Add some spacing for buttons and inputs in these sections if needed */
+#score-keeping-section input[type="number"],
+#score-keeping-section button {
+    padding: 10px;
+    margin-right: 10px; /* Spacing between input and button */
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+#score-keeping-section input[type="number"] {
+    background: var(--surface-alt);
+    color: var(--text);
+    width: auto; /* Adjust width as needed */
+}
+
+#score-keeping-section button,
+#analysis-section button {
+    background: var(--primary-dark);
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s;
+}
+
+#score-keeping-section button:hover,
+#analysis-section button:hover {
+    background: var(--primary);
+}

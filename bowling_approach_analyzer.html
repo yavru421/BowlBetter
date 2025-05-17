@@ -1,4 +1,4 @@
-<!-- BowlBetter! 1.1 | May 2025 -->
+<!-- BowlBetter! 1.2 | May 2025 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>    <meta charset="UTF-8">
@@ -609,7 +609,7 @@
         <header class="app-header">
             <!-- Replace the existing SVG with an iframe for the YouTube video -->
             <div class="video-logo-container">
-                <iframe title="Bowling approach demonstration video" src="https://www.youtube.com/embed/01ETkzaatkc?autoplay=1&mute=1&loop=1&playlist=01ETkzaatkc&controls=0&showinfo=0&autohide=1&modestbranding=1&vq=hd720" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen class="youtube-logo-iframe"></iframe>
+                <iframe title="Bowling approach demonstration video" src="https://www.youtube.com/embed/01ETkzaatkc?autoplay=1&mute=1&loop=1&playlist=01ETkzaatkc&controls=0&showinfo=0&autohide=1&modestbranding=1&vq=hd720" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="youtube-logo-iframe"></iframe>
             </div>
             <h1>BowlBetter!</h1>
             <div class="header-meta">
@@ -715,10 +715,25 @@
             </div>
 
             <div id="analysisResults" class="mt-20">
-                <!-- Analysis results will be displayed here -->
+                <h3>Analysis Results</h3>
+                <p id="finalAnalysisPrompt">Your analysis is complete! Here are the key takeaways for your bowling approach:</p>
+                <ul id="finalAnalysisList">
+                    <!-- Dynamically populated actionable insights -->
+                </ul>
             </div>
     </div>
 
+    <div id="testApiMenu" class="mt-20">
+        <h3>Test API Endpoints</h3>
+        <p>Use this section to test the API endpoints before engaging with the app.</p>
+        <label for="testApiKey">API Key:</label>
+        <input type="text" id="testApiKey" placeholder="Enter your API Key">
+        <button id="testAnalysisEndpointBtn">Test Analysis Endpoint</button>
+        <div id="testApiResponse" class="mt-10">
+            <!-- Test results will appear here -->
+        </div>
+    </div>
+    <a href="tournement_day.html" class="btn btn-secondary">Go to Tournament Day</a>
     <script src="js/scripts.js"></script>
 </body>
 </html>
