@@ -442,22 +442,6 @@
             margin-bottom: 0;
             opacity: 0.85;
         }
-        .toggle-api-key-btn {
-            position: absolute;
-            right: 10px;
-            top: 50%; /* Adjusted to center vertically relative to the input */
-            transform: translateY(-50%); /* Center alignment */
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.2em;
-            color: var(--primary);
-            padding: 0 4px;
-            z-index: 2;
-        }
-        .toggle-api-key-btn:focus {
-            outline: 2px solid var(--primary);
-        }
         .app-header {
             text-align: center;
             margin-bottom: 18px;
@@ -641,7 +625,6 @@
         <div class="api-key-row">
             <label for="apiKey">Groq API Key:</label>
             <input type="text" id="apiKey" placeholder="Enter your Groq API Key here">
-            <button type="button" id="toggleApiKeyBtn" class="toggle-api-key-btn" aria-label="Show/Hide API Key">👁️</button>
         </div>
         <div>
             <label for="stepCount">Number of steps in your bowling approach:</label>
