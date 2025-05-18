@@ -32,6 +32,7 @@ Welcome to **BowlBetter**, the ultimate tool designed for bowling coaches and se
 
 1. **Access the App**:
    - Visit the app's website hosted on GitHub Pages (link will be provided after deployment).
+   - Watch the [associated YouTube video](https://youtu.be/kz-xVN2BG0Y) for a quick overview and tutorial.
 
 2. **Navigate Through Pages**:
    - **Welcome Page**: Start your journey with an overview of the app.
