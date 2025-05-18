@@ -9,6 +9,7 @@ export default function SettingsPage() {
   const { theme, toggleTheme } = useTheme();
   const darkMode = theme === 'dark';
   const [notifications, setNotifications] = useState(true);
+  const [apiKeyError, setApiKeyError] = useState('');
   
   useEffect(() => {
     // Load the API key from localStorage
@@ -18,8 +19,18 @@ export default function SettingsPage() {
   
   const handleSaveApiKey = () => {
     setIsLoading(true);
+    setApiKeyError(''); // Clear previous errors
+    setIsSaved(false);
+
+    // Basic validation (e.g., not empty)
+    // A more robust validation might check the key format or length if known
+    if (!apiKey.trim()) {
+      setApiKeyError('API key cannot be empty.');
+      setIsLoading(false);
+      return;
+    }
     
-    // Simulate API check
+    // Simulate API check (in a real app, you might ping an endpoint)
     setTimeout(() => {
       localStorage.setItem('groqApiKey', apiKey);
       setIsLoading(false);
@@ -82,9 +93,14 @@ export default function SettingsPage() {
                         type="password"
                         id="apiKey"
                         value={apiKey}
-                        onChange={(e) => setApiKey(e.target.value)}
-                        className="flex-1 px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        onChange={(e) => {
+                          setApiKey(e.target.value);
+                          if (apiKeyError) setApiKeyError(''); // Clear error on change
+                          if (isSaved) setIsSaved(false); // Clear saved status on change
+                        }}
+                        className={`flex-1 px-4 py-2 border rounded-l-md focus:outline-none focus:ring-2 ${apiKeyError ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-green-500'}`}
                         placeholder="Enter your Groq API key..."
+                        aria-describedby={apiKeyError ? "apiKey-error" : undefined}
                       />
                       <button
                         onClick={handleSaveApiKey}
@@ -116,9 +132,11 @@ export default function SettingsPage() {
                         )}
                       </button>
                     </div>
-                    <p className="mt-2 text-sm text-gray-500">
-                      Don't have an API key? <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" className="text-green-600 hover:text-green-800">Get one here</a>
-                    </p>
+                    {apiKeyError && (
+                      <p id="apiKey-error" className="mt-1 text-xs text-red-600">
+                        {apiKeyError}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

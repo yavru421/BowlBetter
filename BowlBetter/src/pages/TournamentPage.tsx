@@ -10,6 +10,19 @@ interface Game {
   notes: string;
 }
 
+// Helper function to validate a single game object
+const isValidGame = (item: any): item is Game => {
+  return (
+    typeof item === 'object' &&
+    item !== null &&
+    typeof item.id === 'string' &&
+    typeof item.score === 'number' &&
+    typeof item.date === 'string' &&
+    typeof item.location === 'string' &&
+    typeof item.notes === 'string'
+  );
+};
+
 export default function TournamentPage() {
   const [games, setGames] = useState<Game[]>([]);
   const [newGame, setNewGame] = useState<Omit<Game, 'id'>>({
@@ -27,7 +40,18 @@ export default function TournamentPage() {
     // Load games from localStorage
     const savedGames = localStorage.getItem('bowlBetterGames');
     if (savedGames) {
-      setGames(JSON.parse(savedGames));
+      try {
+        const parsedGames = JSON.parse(savedGames);
+        if (Array.isArray(parsedGames) && parsedGames.every(isValidGame)) {
+          setGames(parsedGames);
+        } else {
+          console.warn('Games data from localStorage was not a valid array of Game objects. Resetting.');
+          localStorage.removeItem('bowlBetterGames'); // Clear corrupted data
+        }
+      } catch (error) {
+        console.error('Failed to parse games from localStorage. Resetting.', error);
+        localStorage.removeItem('bowlBetterGames'); // Clear corrupted data
+      }
     }
     
     // Set tip of the day
@@ -36,7 +60,12 @@ export default function TournamentPage() {
   
   useEffect(() => {
     // Save games to localStorage whenever they change
-    localStorage.setItem('bowlBetterGames', JSON.stringify(games));
+    try {
+      localStorage.setItem('bowlBetterGames', JSON.stringify(games));
+    } catch (error) {
+      console.error('Failed to save games to localStorage:', error);
+      // Consider notifying the user if saving fails, e.g., due to quota
+    }
   }, [games]);
   
   const getRandomTip = () => {
@@ -59,6 +88,14 @@ export default function TournamentPage() {
   const handleAddGame = () => {
     if (newGame.score < 0 || newGame.score > 300) {
       alert('Please enter a valid score between 0 and 300');
+      return;
+    }
+
+    // Validate date
+    if (!newGame.date || isNaN(new Date(newGame.date).getTime())) {
+      alert('Please enter a valid date.');
+      // Optionally, reset to a default valid date or focus the input:
+      // setNewGame(prev => ({ ...prev, date: new Date().toISOString().split('T')[0] }));
       return;
     }
     
@@ -119,6 +156,27 @@ export default function TournamentPage() {
     }
   };
   
+  const exportToCSV = () => {
+    // Placeholder for CSV export functionality
+    if (games.length === 0) {
+      alert("No games to export.");
+      return;
+    }
+    
+    const header = "Date,Score,Location,Notes\\n";
+    const csvData = games.map(game => {
+      const date = new Date(game.date).toLocaleDateString();
+      const score = game.score;
+      const location = game.location.replace(/"/g, '""'); // Escape double quotes
+      const notes = game.notes.replace(/"/g, '""');   // Escape double quotes
+      return `${date},${score},"${location}","${notes}"`;
+    }).join('\\n');
+    
+    const blob = new Blob([header + csvData], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, "bowlbetter_games.csv");
+    console.log("Export to CSV successful.");
+  };
+
   return (
     <div className="max-w-4xl mx-auto">
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -274,6 +332,7 @@ export default function TournamentPage() {
                         <button 
                           onClick={() => toggleSort('score')} 
                           className="flex items-center focus:outline-none"
+                          aria-label="Sort by score"
                         >
                           Score
                           {sortField === 'score' && (
@@ -287,6 +346,7 @@ export default function TournamentPage() {
                         <button 
                           onClick={() => toggleSort('date')} 
                           className="flex items-center focus:outline-none"
+                          aria-label="Sort by date"
                         >
                           Date
                           {sortField === 'date' && (
@@ -332,6 +392,7 @@ export default function TournamentPage() {
                           <button
                             onClick={() => handleDeleteGame(game.id)}
                             className="text-red-600 hover:text-red-900"
+                            aria-label={`Delete game on ${new Date(game.date).toLocaleDateString()} with score ${game.score}`}
                           >
                             <Trash size={16} />
                           </button>

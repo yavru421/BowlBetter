@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { ChevronDown, Menu, Moon, Sun, X } from 'lucide-react';
+import { Menu, Moon, Sun, X } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 
 export default function Header() {
@@ -62,6 +62,22 @@ export default function Header() {
               }
             >
               Settings
+            </NavLink>
+            <NavLink 
+              to="/home" 
+              className={({ isActive }) => 
+                `font-medium ${isActive ? 'text-green-600' : 'text-gray-600 hover:text-green-500'}`
+              }
+            >
+              Home
+            </NavLink>
+            <NavLink 
+              to="/video-upload" 
+              className={({ isActive }) => 
+                `font-medium ${isActive ? 'text-green-600' : 'text-gray-600 hover:text-green-500'}`
+              }
+            >
+              Video Upload
             </NavLink>
           </nav>
           
@@ -130,6 +146,24 @@ export default function Header() {
               onClick={() => setIsMenuOpen(false)}
             >
               Settings
+            </NavLink>
+            <NavLink 
+              to="/home" 
+              className={({ isActive }) => 
+                `block py-2 font-medium ${isActive ? 'text-green-600' : 'text-gray-600 hover:text-green-500'}`
+              }
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Home
+            </NavLink>
+            <NavLink 
+              to="/video-upload" 
+              className={({ isActive }) => 
+                `block py-2 font-medium ${isActive ? 'text-green-600' : 'text-gray-600 hover:text-green-500'}`
+              }
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Video Upload
             </NavLink>
           </nav>
         )}

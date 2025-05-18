@@ -96,6 +96,7 @@ export default function ImageUploader({ onFileSelect, currentFile, onAnalyze, is
             <button
               onClick={() => onFileSelect(null)}
               className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+              aria-label="Remove uploaded image"
             >
               <Trash size={16} />
             </button>
@@ -162,6 +163,7 @@ export default function ImageUploader({ onFileSelect, currentFile, onAnalyze, is
         onChange={handleFileInputChange}
         accept="image/*"
         className="hidden"
+        aria-label="Upload image"
       />
     </div>
   );

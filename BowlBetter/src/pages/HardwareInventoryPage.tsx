@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Pencil, Plus, Save, Trash } from 'lucide-react';
+import { Plus, Save, Trash } from 'lucide-react';
 
 interface Ball {
   id: string;
@@ -9,6 +9,20 @@ interface Ball {
   layout: string;
   notes: string;
 }
+
+// Helper function to validate a single ball object
+const isValidBall = (item: any): item is Ball => {
+  return (
+    typeof item === 'object' &&
+    item !== null &&
+    typeof item.id === 'string' &&
+    typeof item.name === 'string' &&
+    typeof item.weight === 'number' &&
+    typeof item.coverStock === 'string' &&
+    typeof item.layout === 'string' &&
+    typeof item.notes === 'string'
+  );
+};
 
 export default function HardwareInventoryPage() {
   const [balls, setBalls] = useState<Ball[]>([]);
@@ -25,13 +39,29 @@ export default function HardwareInventoryPage() {
     // Load balls from localStorage
     const savedBalls = localStorage.getItem('bowlBetterBalls');
     if (savedBalls) {
-      setBalls(JSON.parse(savedBalls));
+      try {
+        const parsedBalls = JSON.parse(savedBalls);
+        if (Array.isArray(parsedBalls) && parsedBalls.every(isValidBall)) {
+          setBalls(parsedBalls);
+        } else {
+          console.warn('Balls data from localStorage was not a valid array of Ball objects. Resetting.');
+          localStorage.removeItem('bowlBetterBalls'); // Clear corrupted data
+        }
+      } catch (error) {
+        console.error('Failed to parse balls from localStorage. Resetting.', error);
+        localStorage.removeItem('bowlBetterBalls'); // Clear corrupted data
+      }
     }
   }, []);
   
   useEffect(() => {
     // Save balls to localStorage whenever they change
-    localStorage.setItem('bowlBetterBalls', JSON.stringify(balls));
+    try {
+      localStorage.setItem('bowlBetterBalls', JSON.stringify(balls));
+    } catch (error) {
+      console.error('Failed to save balls to localStorage:', error);
+      // Consider notifying the user if saving fails, e.g., due to quota
+    }
   }, [balls]);
   
   const handleAddBall = () => {
@@ -190,6 +220,7 @@ export default function HardwareInventoryPage() {
                     <button
                       onClick={() => handleDeleteBall(ball.id)}
                       className="text-red-500 hover:text-red-700 p-1"
+                      aria-label={`Delete ${ball.name}`}
                     >
                       <Trash size={18} />
                     </button>

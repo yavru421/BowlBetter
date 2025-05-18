@@ -8,6 +8,7 @@ import SettingsPage from './pages/SettingsPage';
 import WelcomePage from './pages/WelcomePage';
 import HardwareInventoryPage from './pages/HardwareInventoryPage';
 import ReleaseAnalysisPage from './pages/ReleaseAnalysisPage';
+import HomePage from './pages/HomePage';
 import { ThemeProvider } from './contexts/ThemeContext';
 import OfflineAlert from './components/OfflineAlert';
 
@@ -57,6 +58,7 @@ export function App() {
             <Route path="/hardware" element={<HardwareInventoryPage />} />
             <Route path="/release" element={<ReleaseAnalysisPage />} />
             <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/home" element={<HomePage />} />
           </Routes>
         </main>
       </Router>
@@ -67,7 +69,7 @@ export function App() {
 
 function LoadingScreen() {
   const [currentTipIndex, setCurrentTipIndex] = useState(0);
-  
+
   const tips = [
     'Upload images of your bowling approach for detailed analysis.',
     'Our AI analyzes your stance, arm position, and follow-through.',
@@ -90,12 +92,12 @@ function LoadingScreen() {
   }, []);
 
   return (
-    <div className="fixed inset-0" style={{ fontFamily: 'Poppins, sans-serif' }}>
-      <div className="relative size-full">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 flex size-full flex-col items-center justify-center gap-4 p-8 text-center">
+    <div className="fixed inset-0 font-poppins">
+      <div className="relative w-full h-full">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 flex w-full h-full flex-col items-center justify-center gap-4 p-8 text-center">
           <div className="relative flex items-center justify-center w-16 h-16 bg-white border rounded-full shadow-lg">
             <div className="absolute h-16 w-16 rounded-full animate-spin bg-gradient-to-r from-blue-500 to-indigo-600"></div>
-            <div className="absolute flex items-center justify-center bg-white rounded-full h-[60px] w-[60px]">
+            <div className="absolute flex items-center justify-center bg-white rounded-full h-15 w-15">
               <svg viewBox="0 0 24 24" width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2Z" stroke="#4F46E5" strokeWidth="2" />
                 <path d="M12 5C13.6569 5 15 6.34315 15 8C15 9.65685 13.6569 11 12 11C10.3431 11 9 9.65685 9 8C9 6.34315 10.3431 5 12 5Z" fill="#4F46E5" />
@@ -106,12 +108,9 @@ function LoadingScreen() {
           <div className="text-indigo-800 font-bold text-2xl mt-2">BowlBetter!</div>
           <div className="text-indigo-900 font-medium">Loading your bowling coach...</div>
 
-          <div className="relative h-[115px] pt-4 pb-8 -mt-4 w-[310px] overflow-hidden">
+          <div className="relative h-28 pt-4 pb-8 -mt-4 w-80 overflow-hidden">
             <div className="absolute inset-x-0 top-0 h-4 z-10 bg-gradient-to-t from-transparent to-indigo-50" />
-            <div
-              className="transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateY(-${currentTipIndex * 48 + 4}px)` }}
-            >
+            <div className="tip-container tip-slide">
               {tips.map((tip, index) => (
                 <div
                   key={index}
