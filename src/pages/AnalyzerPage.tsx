@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react';
 import { Camera, Check, Loader, Upload } from 'lucide-react';
 import ImageUploader from '../components/ImageUploader';
 import { useAssignment } from '../contexts/AssignmentContext';
+import { useScoringContext } from '../contexts/ScoringContext';
+import base64 from 'base64-js';
 
 export default function AnalyzerPage() {
   const { assignments, setAssignments } = useAssignment(); // Added setAssignments
+  const { scoringContext } = useScoringContext(); // Retrieve the scoring context
   const [numSteps, setNumSteps] = useState(4);
   const [activeStep, setActiveStep] = useState(0);
   const [stepImages, setStepImages] = useState<{ [key: number]: File | null }>({});
@@ -22,18 +25,23 @@ export default function AnalyzerPage() {
 
   // Initialize step images and analysis results
   useEffect(() => {
+    console.log('Initializing stepImages and analysisResults for numSteps:', numSteps);
     const initialStepImages: { [key: number]: File | null } = {};
     const initialAnalysisResults: { [key: number]: string | null } = {};
-    
+
     for (let i = 0; i < numSteps; i++) {
       initialStepImages[i] = stepImages[i] || null; // Preserve existing images if numSteps changes
       initialAnalysisResults[i] = analysisResults[i] || null;
     }
-    
+
+    console.log('Initial stepImages:', initialStepImages);
     setStepImages(initialStepImages);
     setAnalysisResults(initialAnalysisResults);
-    // setOverallAnalysis(null); // Commented out: Overall analysis should persist if steps change but images are still there
   }, [numSteps]);
+
+  useEffect(() => {
+    console.log('Updated stepImages:', stepImages);
+  }, [stepImages]);
 
   useEffect(() => {
     console.log('AnalyzerPage Rendered');
@@ -82,11 +90,15 @@ export default function AnalyzerPage() {
 
   const assignFrameFromSequence = (assignmentType: string) => {
     if (importedImageFiles[currentFrameIndex]) {
-      setAssignments((prev) => ({
-        ...prev,
-        // Using currentFrameIndex from the sequence as the key in assignments
-        [currentFrameIndex]: { step: assignmentType, file: importedImageFiles[currentFrameIndex] },
-      }));
+      setAssignments((prev) => {
+        const updatedAssignments = {
+          ...prev,
+          // Using currentFrameIndex from the sequence as the key in assignments
+          [currentFrameIndex]: { step: assignmentType, file: importedImageFiles[currentFrameIndex] },
+        };
+        console.log('Updated assignments:', updatedAssignments);
+        return updatedAssignments;
+      });
       console.log(`Assigned Frame ${currentFrameIndex} from sequence to ${assignmentType}`);
     } else {
       console.warn("No image file at currentFrameIndex to assign.");
@@ -95,6 +107,7 @@ export default function AnalyzerPage() {
 
 
   const handleFileSelect = (stepIndex: number, file: File | null) => {
+    console.log(`handleFileSelect called for stepIndex: ${stepIndex}, file:`, file);
     setStepImages(prev => ({
       ...prev,
       [stepIndex]: file
@@ -125,12 +138,14 @@ export default function AnalyzerPage() {
 
   // Allow uploading multiple images at once and distribute them to steps
   const handleMultipleFiles = (files: FileList) => {
+    console.log('handleMultipleFiles called with files:', files);
     if (files.length > 0) {
       // Determine how many steps we can fill
       const stepsToFill = Math.min(files.length, numSteps);
-      
+      console.log(`Distributing files to ${stepsToFill} steps.`);
       for (let i = 0; i < stepsToFill; i++) {
         if (files[i].type.startsWith('image/')) {
+          console.log(`Assigning file to step ${i}:`, files[i]);
           handleFileSelect(i, files[i]);
         }
       }
@@ -149,75 +164,104 @@ export default function AnalyzerPage() {
   };
 
   const analyzeSingleImage = async (stepIndex: number) => {
-    const apiKey = localStorage.getItem('groqApiKey');
-    if (!apiKey) {
-      alert('Please set your Groq API key in Settings first.');
-      return;
-    }
-
     const file = stepImages[stepIndex];
     if (!file) return;
 
     setIsAnalyzing(true);
-    
-    // Mock API call (in a real app, this would call the Groq API)
-    setTimeout(() => {
-      const mockAnalysis = getMockAnalysisResult(stepIndex);
-      setAnalysisResults(prev => ({
-        ...prev,
-        [stepIndex]: mockAnalysis
-      }));
-      setIsAnalyzing(false);
-    }, 1500);
-  };
+
+    try {
+        const apiKey = localStorage.getItem('groqApiKey');
+        if (!apiKey) {
+            throw new Error('API key is missing. Please set it in the Settings page.');
+        }
+
+        const reader = new FileReader();
+        reader.onload = async () => {
+            const base64Image = reader.result?.toString().split(',')[1];
+
+            const response = await fetch('https://api.groq.com/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${apiKey}`,
+                },
+                body: JSON.stringify({
+                    messages: [
+                        {
+                            role: 'user',
+                            content: [
+                                { type: 'text', text: "What's in this image?" },
+                                {
+                                    type: 'image_url',
+                                    image_url: {
+                                        url: `data:image/jpeg;base64,${base64Image}`,
+                                    },
+                                },
+                            ],
+                        },
+                    ],
+                    model: 'meta-llama/llama-4-scout-17b-16e-instruct',
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to analyze image');
+            }
+
+            const result = await response.json();
+            setAnalysisResults((prev) => ({
+                ...prev,
+                [stepIndex]: result.choices[0].message.content,
+            }));
+        };
+
+        reader.readAsDataURL(file);
+    } catch (error) {
+        console.error('Error analyzing image:', error);
+    } finally {
+        setIsAnalyzing(false);
+    }
+};
 
   const analyzeAllSteps = async () => {
-    // Check if all steps have images
-    const allStepsComplete = Object.values(stepImages).every(img => img !== null);
-    
+    const allStepsComplete = Object.values(stepImages).every((img) => img !== null);
+
     if (!allStepsComplete) {
-      alert('Please upload images for all steps before analyzing.');
-      return;
+        alert('Please upload images for all steps before analyzing.');
+        return;
     }
-    
+
     setIsAnalyzing(true);
-    
-    // Analyze each step
-    for (let i = 0; i < numSteps; i++) {
-      await analyzeSingleImage(i);
+
+    try {
+        for (let i = 0; i < numSteps; i++) {
+            await analyzeSingleImage(i);
+        }
+
+        const overallResponse = await fetch('https://api.groq.com/overall-analysis', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('groqApiKey')}`,
+            },
+            body: JSON.stringify({
+                stepResults: analysisResults,
+                scoringContext,
+            }),
+        });
+
+        if (!overallResponse.ok) {
+            throw new Error('Failed to fetch overall analysis');
+        }
+
+        const overallResult = await overallResponse.json();
+        setOverallAnalysis(overallResult.analysis);
+    } catch (error) {
+        console.error('Error analyzing all steps:', error);
+    } finally {
+        setIsAnalyzing(false);
     }
-    
-    // Generate overall analysis
-    setTimeout(() => {
-      setOverallAnalysis(getMockOverallAnalysis());
-      setIsAnalyzing(false);
-    }, 2000);
-  };
-
-  // Mock analysis results for demo purposes
-  const getMockAnalysisResult = (stepIndex: number) => {
-    const analyses = [
-      "Step 1: Your initial stance shows good posture with shoulders aligned properly (90% confidence). Your weight distribution appears to be 60/40 favoring your dominant side, which is optimal. Your knee flex is at approximately 20 degrees - aim for 25-30 degrees for improved stability and power. Ball position is at chest height, which is good, but consider raising it by 2-3 inches for improved momentum and a more consistent push away motion. Ensure your grip pressure remains relaxed to avoid tension traveling up your arm.",
-      "Step 2: Push away motion timing scores 85/100 - your ball starts moving in sync with your first step. Arm swing path deviates 8 degrees from centerline (aim for <5 degrees). Your timing sequence shows ball and foot moving in precise sync, which is excellent for consistency. Shoulder rotation is minimal at 4 degrees, which is ideal. Head position remains stable throughout the push away, maintaining a consistent eye line to your target. Focus on keeping your elbow closer to your side during the push away for improved directional control.",
-      "Step 3: Excellent knee bend at 35 degrees, which is optimal for power generation. Back angle is maintained at 15 degrees from vertical, providing excellent leverage. Shoulder alignment shows 7 degrees of rotation away from parallel to the foul line - work on reducing this to <5 degrees. Ball position is at the bottom of the swing, with a path that's 94% on plane. Timing indicators show you're right at the transition point between downswing and upswing. Head position remains steady with eyes focused on target.",
-      "Step 4: Follow-through shows lateral deviation of 4.5 inches from ideal path - aim for <3 inches. Slide foot is angled 12 degrees from your target line - work on reducing this to <8 degrees for improved directional control. Arm extension at release point is 95% complete, which is excellent. Follow-through height is optimal, finishing above shoulder level. Balance at finish position scored 82/100 - work on maintaining your center of gravity over your slide foot. Head position remains steady through release, indicating good focus."
-    ];
-    
-    return analyses[stepIndex] || "Analysis not available for this step.";
-  };
-  
-  const getMockOverallAnalysis = () => {
-    // Simulate extracting metrics from the analysis text
-    // In a real scenario, the API might return structured data or you'd parse this text more robustly
-    setAnalysisMetrics({
-      timing: 89,
-      balance: 82,
-      armSwing: 77,
-      posture: 85
-    });
-    return "Overall Performance Assessment (Score: 83/100):\n\nYour approach demonstrates solid fundamentals with consistent timing and good posture fundamentals. The tempo of your approach is very consistent at 0.87 seconds per step, which is excellent for repeatability.\n\nKey Metrics:\n• Timing Score: 89/100\n• Balance Score: 82/100\n• Arm Swing Path: 77/100\n• Posture Consistency: 85/100\n\nFor significant improvement, focus on these key areas:\n\n1) Arm Swing Consistency: Your arm swing deviates 6-8 degrees from the ideal pendulum path. Practice one-step drills focusing exclusively on maintaining a straight swing path directly in line with your target. This will improve your accuracy by an estimated 15%.\n\n2) Shoulder Alignment: Throughout your approach, your shoulders rotate 7-10 degrees open relative to the lane. Work on keeping your shoulders more square to the lane using the 'square shoulders' drill (holding a towel across your chest with both hands during approach practice).\n\n3) Follow-through Precision: Your follow-through shows inconsistency in direction and extension. Practice the 'finish position hold' drill, maintaining your finish position for 3 seconds after each shot to develop muscle memory for a complete, directionally sound follow-through.\n\nWith these targeted improvements, projected scoring potential increase is 12-18 pins based on statistical analysis of similar form corrections.";
-  };
-
+};
   return (
     <div className="max-w-4xl mx-auto">
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">

@@ -11,6 +11,7 @@ import ReleaseAnalysisPage from './pages/ReleaseAnalysisPage';
 import HomePage from './pages/HomePage';
 import { ThemeProvider } from './contexts/ThemeContext';
 import OfflineAlert from './components/OfflineAlert';
+import { ScoringProvider } from './contexts/ScoringContext';
 
 export function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -42,28 +43,30 @@ export function App() {
   }
 
   return (
-    <ThemeProvider>
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-900 dark:to-green-950 font-['Poppins'] text-gray-900 dark:text-gray-100">
-        <Router>
-          <Header />
-          <OfflineAlert />
-        <main className="container mx-auto px-4 py-6">
-          <Routes>
-            <Route path="/" element={!hasVisitedBefore ? <WelcomePage onComplete={() => {
-              localStorage.setItem('hasVisitedBefore', 'true');
-              setHasVisitedBefore(true);
-            }} /> : <Navigate to="/analyzer" />} />
-            <Route path="/analyzer" element={<AnalyzerPage />} />
-            <Route path="/tournament" element={<TournamentPage />} />
-            <Route path="/hardware" element={<HardwareInventoryPage />} />
-            <Route path="/release" element={<ReleaseAnalysisPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/home" element={<HomePage />} />
-          </Routes>
-        </main>
-      </Router>
-      </div>
-    </ThemeProvider>
+    <ScoringProvider>
+      <ThemeProvider>
+        <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-900 dark:to-green-950 font-['Poppins'] text-gray-900 dark:text-gray-100">
+          <Router>
+            <Header />
+            <OfflineAlert />
+          <main className="container mx-auto px-4 py-6">
+            <Routes>
+              <Route path="/" element={!hasVisitedBefore ? <WelcomePage onComplete={() => {
+                localStorage.setItem('hasVisitedBefore', 'true');
+                setHasVisitedBefore(true);
+              }} /> : <Navigate to="/analyzer" />} />
+              <Route path="/analyzer" element={<AnalyzerPage />} />
+              <Route path="/tournament" element={<TournamentPage />} />
+              <Route path="/hardware" element={<HardwareInventoryPage />} />
+              <Route path="/release" element={<ReleaseAnalysisPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/home" element={<HomePage />} />
+            </Routes>
+          </main>
+        </Router>
+        </div>
+      </ThemeProvider>
+    </ScoringProvider>
   );
 }
 

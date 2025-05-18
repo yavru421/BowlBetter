@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Camera, Check, Loader, Trash, Upload } from 'lucide-react';
+import { Camera, Loader, Trash, Upload } from 'lucide-react';
 
 interface ImageUploaderProps {
   onFileSelect: (file: File | null) => void;
@@ -76,7 +76,7 @@ export default function ImageUploader({ onFileSelect, currentFile, onAnalyze, is
 
   return (
     <div
-      className={`border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center transition-colors ${
+      className={`image-uploader border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center transition-colors ${
         isDragging ? 'border-green-400 bg-green-50 dark:bg-green-900/20' : 
         currentFile ? 'border-green-300 bg-green-50 dark:bg-green-900/10' : 
         'border-gray-300 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-600'

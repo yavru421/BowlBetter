@@ -8,16 +8,10 @@ export default function Header() {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <header className="bg-white shadow-md">
-      <div className="container mx-auto px-4 py-3">
+    <header className="bg-white shadow-md relative header-background">
+      <div className="container mx-auto px-4 py-3 relative z-10">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center mr-2">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2Z" stroke="#ffffff" strokeWidth="2" />
-                <path d="M12 5C13.6569 5 15 6.34315 15 8C15 9.65685 13.6569 11 12 11C10.3431 11 9 9.65685 9 8C9 6.34315 10.3431 5 12 5Z" fill="#ffffff" />
-              </svg>
-            </div>
             <span className="text-xl font-bold text-green-700">BowlBetter!</span>
           </div>
           

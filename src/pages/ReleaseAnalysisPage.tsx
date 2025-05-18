@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Camera, Download, Loader, Share2 } from 'lucide-react';
 import { useAssignment } from '../contexts/AssignmentContext';
+import base64 from 'base64-js';
 
 export default function ReleaseAnalysisPage() {
   const { assignments } = useAssignment();
@@ -68,39 +69,79 @@ export default function ReleaseAnalysisPage() {
   }, [assignments]);
 
   const analyzeRelease = async () => {
-    const apiKey = localStorage.getItem('groqApiKey');
-    if (!apiKey) {
-      alert('Please set your Groq API key in Settings first.');
-      return;
-    }
-
     if (!file) return;
 
     setIsAnalyzing(true);
-    
-    // Mock API call (in a real app, this would call the Groq API)
-    setTimeout(() => {
-      const mockAnalysis = getMockReleaseAnalysis();
-      setAnalysisResults(mockAnalysis);
-      setIsAnalyzing(false);
-    }, 2000);
-  };
 
-  // Mock analysis results for demo purposes
-  const getMockReleaseAnalysis = () => {
-    return {
-      overall: "Your release shows a consistent follow-through with good finger position. The wrist position is slightly cupped which is contributing to a higher rev rate. Your release angle appears to be around 45 degrees, which is optimal for medium oil conditions. Consider focusing on maintaining a more consistent wrist position throughout the release for improved consistency.",
-      wristPosition: "Your wrist is slightly cupped at release (approximately 15 degrees), which is generating good revolutions on the ball. However, there's some inconsistency in maintaining this position throughout the release phase. Try strengthening your wrist with specific exercises to maintain this position more consistently.",
-      fingerPosition: "Excellent finger position at release with proper lifting motion. Your fingers are exiting the ball at the optimal position (between 4-5 o'clock for right-handers), contributing to a strong entry angle into the pocket. Continue to focus on this consistent exit point.",
-      releaseAngle: "Your release angle is approximately 45 degrees, which is ideal for medium oil conditions. This angle is creating good entry angle into the pocket. For heavier oil conditions, you might benefit from a slightly higher release angle (closer to 50-55 degrees) to create more axis rotation.",
-      metrics: {
-        wristPositionScore: 79,
-        fingerPositionScore: 92,
-        releaseAngleScore: 86,
-        overallScore: 85
-      }
-    };
-  };
+    try {
+        const apiKey = localStorage.getItem('groqApiKey');
+        if (!apiKey) {
+            throw new Error('API key is missing. Please set it in the Settings page.');
+        }
+
+        const reader = new FileReader();
+        reader.onload = async () => {
+            const base64Image = reader.result?.toString().split(',')[1];
+            try {
+                const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${apiKey}`,
+                    },
+                    body: JSON.stringify({
+                        model: 'meta-llama/llama-4-scout-17b-16e-instruct',
+                        messages: [
+                            {
+                                role: 'user',
+                                content: [
+                                    { type: 'text', text: "What's in this image?" },
+                                    {
+                                        type: 'image_url',
+                                        image_url: {
+                                            url: `data:image/jpeg;base64,${base64Image}`,
+                                        },
+                                    },
+                                ],
+                            },
+                        ],
+                    }),
+                });
+
+                let result;
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Groq API error:', errorText);
+                    console.error('Groq API status:', response.status, response.statusText);
+                    if (response.status === 0) {
+                        console.error('Possible CORS or network error.');
+                    }
+                    throw new Error('Failed to analyze release image');
+                }
+
+                result = await response.json();
+                console.log('Groq API response:', result);
+                // Defensive: check for expected structure
+                const content = result.choices?.[0]?.message?.content;
+                setAnalysisResults({
+                    overall: content?.overall || null,
+                    wristPosition: content?.wristPosition || null,
+                    fingerPosition: content?.fingerPosition || null,
+                    releaseAngle: content?.releaseAngle || null,
+                    metrics: content?.metrics || null,
+                });
+            } catch (fetchError) {
+                console.error('Fetch or network error:', fetchError);
+            }
+        };
+
+        reader.readAsDataURL(file);
+    } catch (error) {
+        console.error('Error analyzing release image:', error);
+    } finally {
+        setIsAnalyzing(false);
+    }
+};
 
   return (
     <div className="max-w-4xl mx-auto">

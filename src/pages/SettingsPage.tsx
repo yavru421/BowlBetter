@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Bell, CircleCheck, Key, Moon, Save, Sun, User } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
+import { useScoringContext } from '../contexts/ScoringContext';
 
 export default function SettingsPage() {
   const [apiKey, setApiKey] = useState('');
@@ -10,6 +11,7 @@ export default function SettingsPage() {
   const darkMode = theme === 'dark';
   const [notifications, setNotifications] = useState(true);
   const [apiKeyError, setApiKeyError] = useState('');
+  const { scoringContext, setScoringContext } = useScoringContext();
   
   useEffect(() => {
     // Load the API key from localStorage
@@ -42,6 +44,50 @@ export default function SettingsPage() {
       }, 3000);
     }, 1000);
   };
+
+  const handleContextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setScoringContext(e.target.value);
+  };
+
+  const testGroqEndpoint = async (endpoint: string) => {
+    const apiKey = localStorage.getItem('groqApiKey');
+    if (!apiKey) {
+        alert('API key is missing. Please set it first.');
+        return;
+    }
+
+    try {
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${apiKey}`,
+            },
+            body: JSON.stringify({
+                model: 'meta-llama/llama-4-scout-17b-16e-instruct',
+                messages: [
+                    {
+                        role: 'user',
+                        content: [
+                            { type: 'text', text: 'Test API call (vision)' },
+                            // Optionally add a sample image_url here for vision test
+                        ],
+                    },
+                ],
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        alert(`Success: ${JSON.stringify(result)}`);
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        alert(`Failed: ${errorMessage}`);
+    }
+};
   
   return (
     <div className="max-w-3xl mx-auto">
@@ -139,6 +185,19 @@ export default function SettingsPage() {
                     )}
                   </div>
                 </div>
+
+                {/* Test Groq API Endpoints Section */}
+                <div className="mt-4">
+                  <h3 className="text-sm font-medium text-gray-900 mb-2">Test Groq API Endpoints</h3>
+                  <div className="space-y-2">
+                    <button
+                        onClick={() => testGroqEndpoint('https://api.groq.com/openai/v1/chat/completions')}
+                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    >
+                        Test Vision Chat Completions Endpoint
+                    </button>
+                  </div>
+                </div>
               </div>
               
               <div id="preferences" className="mb-8">
@@ -187,6 +246,33 @@ export default function SettingsPage() {
                         }`}
                       />
                     </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div id="scoring-context" className="mb-8">
+                <h2 className="text-lg font-medium text-gray-900 mb-4">Scoring Context</h2>
+                
+                <div className="bg-gray-50 p-4 border border-gray-200 rounded-md mb-4">
+                  <p className="text-sm text-gray-600">
+                    Customize the context for scoring. This will be sent to the Groq API along with the metrics to produce a realistic score.
+                  </p>
+                </div>
+                
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="scoringContext" className="block text-sm font-medium text-gray-700 mb-1">
+                      Context for Scoring Prompt
+                    </label>
+                    <div className="flex">
+                      <textarea
+                        id="scoringContext"
+                        value={scoringContext}
+                        onChange={handleContextChange}
+                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        rows={4}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
