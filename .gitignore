@@ -1,26 +1,52 @@
-# BowlBetter!
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-A friendly, AI-powered bowling approach analyzer for everyone.
+# Node
+node_modules/
+dist/
+build/
+.npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+# package-lock.json # Commit if your team does
+# yarn.lock # Commit if your team does
 
-## Project Structure
+# Application specific
+.env
+*.env
+.env.*
+application.log
+*.log
 
-- `bowling_approach_analyzer.html` — Main app (all logic, UI, and styles in one file)
-- `README.md` — User and developer documentation
-- `LICENSE` — MIT License
-- `groq_api_vision_and_files/` — (Optional) Example API files or data
-- `indexindex/` — (Optional) Other HTML demos
+# IDE / Editor
+.vscode/
+.idea/
 
-## How to Use
-
-1. Open `bowling_approach_analyzer.html` in your browser.
-2. Enter your Groq API key (see the app for instructions).
-3. Upload your bowling approach images and analyze!
-
-## How to Contribute
-
-- Fork and submit pull requests for improvements or bug fixes.
-- Please keep the app single-file and mobile-friendly.
-
-## License
-
-MIT — see LICENSE for details.
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
